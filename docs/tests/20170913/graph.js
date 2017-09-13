@@ -23,6 +23,7 @@ function loadGraph( name, image ){
   time[1]=performance.now()
   log( "Execution Time: " + ( time[1] - time[0] ) + "ms" );
   log( "Last Pixel: " + imageData.data[imageData.data.length - 4]);
+  log( "Expected Pixel: " + context.getImageData( image.width-1 , image.height-1 , 1 , 1 ).data[0] );
 }
 
 function renderImages( uploads )
