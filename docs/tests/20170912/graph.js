@@ -7,7 +7,8 @@ function loadGraph( name, image ){
   var context = two_d.getContext( '2d' );
   context.drawImage( image, 0, 0 );
   var imageData = context.getImageData( 0, 0, image.width - 1, image.height - 1).data;
-  log( name + "- imageData:<br/><pre>" + JSON.stringify( imageData, null, '\t' ) + "</pre>" );
+  log( name + "- imageData:" );
+  log( <pre>" + JSON.stringify( imageData, null, '\t' ) + "</pre>" );
 }
 
 function renderImages( uploads )
