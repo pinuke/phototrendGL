@@ -2,7 +2,7 @@ function log( input ){
   document.getElementById( "log" ).innerHTML += input;
 }
 
-funtion loadGraph( image ){
+function loadGraph( image ){
   var two_d = document.createElement( "canvas" );
   var context = two_d.getContext( '2d' );
   context.drawImage( image, 0, 0 );
