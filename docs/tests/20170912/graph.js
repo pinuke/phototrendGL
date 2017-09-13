@@ -8,11 +8,11 @@ function loadGraph( name, image ){
   context.drawImage( image, 0, 0 );
   var imageData = context.getImageData( 0, 0, image.width , image.height );
   log( name + "- imageData:" );
-  log( "imageData height: " + imageData.height);
-  log( "imageData width: " + imageData.width);
-  log( "Image height: " + image.height);
-  log( "Image width: " + image.width);
-  log( "Expected size: " + image.height * image.width );
+  log( "imageData height: " + imageData.height );
+  log( "imageData width: " + imageData.width );
+  log( "Image height: " + image.height );
+  log( "Image width: " + image.width );
+  log( "Expected size: " + image.height * image.width * 4 );
   log( "Actual size: " + imageData.data.length );
 //  log( "<pre>" + JSON.stringify( imageData.data, null, '\t' ) + "</pre>" );
 }
