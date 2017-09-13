@@ -25,7 +25,7 @@ function renderImages( uploads )
         log( uploads[i].name + ": Preparing image for graphing..." );
         var img = new Image;
         (function (val) {
-          some_DOM_object.addEventListener( "load", function (){
+          img.addEventListener( "load", function (){
             log( val + ": Graphing..." );
             loadGraph( val, this );
             log( val + ": Image graphed" );
