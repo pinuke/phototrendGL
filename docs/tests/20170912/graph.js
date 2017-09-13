@@ -24,14 +24,14 @@ function renderImages( uploads )
         log( uploads[i].name + ": File is graphable!" );
         log( uploads[i].name + ": Preparing image for graphing..." );
         var img = new Image;
-        img.name = uploads[i].name;
-        img.onload = function()
-        {
-          log( this.name + ": Graphing..." );
-          loadGraph( this.name, this );
-          log( this.name + ": Image graphed" );
-          window.URL.revokeObjectURL( this.src );
-        }
+        (function (val) {
+          some_DOM_object.addEventListener( "load", function (){
+            log( val + ": Graphing..." );
+            loadGraph( val, this );
+            log( val + ": Image graphed" );
+            window.URL.revokeObjectURL( this.src );
+          })
+        })(uploads[i].name);
         img.src = window.URL.createObjectURL(uploads[i]);
       }
       else if( (/\.(gif|apng)$/i).test(uploads[i].name) )
