@@ -17,7 +17,7 @@ function loadGraph( name, image ){
   log( "Actual size: " + imageData.data.length );
 //  log( "<pre>" + JSON.stringify( imageData.data, null, '\t' ) + "</pre>" );
   time[1]=performance.now()
-  log( "Execution Time: " + ( time[1] - time[0] ) );
+  log( "Execution Time: " + ( time[1] - time[0] ) + "ms" );
 }
 
 function renderImages( uploads )
