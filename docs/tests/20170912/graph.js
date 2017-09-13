@@ -13,7 +13,7 @@ function loadGraph( name, image ){
   log( "Image height: " + image.height);
   log( "Image width: " + image.width);
   log( "Expected size: " + image.height * image.width );
-  log( "Actual size: " + imageData.data );
+  log( "Actual size: " + imageData.data.length );
 //  log( "<pre>" + JSON.stringify( imageData.data, null, '\t' ) + "</pre>" );
 }
 
