@@ -32,6 +32,7 @@ function renderImages( uploads )
             window.URL.revokeObjectURL( this.src );
           })
         })(uploads[i].name);
+        log( uploads[i].name + ": Load handler set" );
         img.src = window.URL.createObjectURL(uploads[i]);
       }
       else if( (/\.(gif|apng)$/i).test(uploads[i].name) )
