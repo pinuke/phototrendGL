@@ -24,12 +24,12 @@ function renderImages( uploads )
         var img = new Image;
         img.onload = function()
         {
-          window.URL.revokeObjectURL( image.src );
+          window.URL.revokeObjectURL( img.src );
         }
         img.src = window.URL.createObjectURL(uploads[i]);
         log( "Graphable File: " + uploads[i].name );
         log( uploads[i].name + ": Graphing..." );
-        loadGraph( uploads[i].name, image );
+        loadGraph( uploads[i].name, img );
         log( uploads[i].name + ": Image graphed" );
       }
       else if( (/\.(gif|apng)$/i).test(uploads[i].name) )
