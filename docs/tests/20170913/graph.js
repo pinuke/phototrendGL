@@ -9,6 +9,8 @@ function prepareVertices( data ){
 function loadGraph( name, image ){
   var time = [performance.now()]
   var two_d = document.createElement( "canvas" );
+  two_d.width = image.width;
+  two_d.height = image.height;
   var context = two_d.getContext( '2d' );
   context.drawImage( image, 0, 0 );
   var imageData = context.getImageData( 0, 0, image.width , image.height );
