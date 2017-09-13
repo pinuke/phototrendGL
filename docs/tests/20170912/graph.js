@@ -6,7 +6,7 @@ function loadGraph( name, image ){
   var two_d = document.createElement( "canvas" );
   var context = two_d.getContext( '2d' );
   context.drawImage( image, 0, 0 );
-  var imageData = context.getImageData( 0, 0, image.width - 1, image.height - 1).data;
+  var imageData = context.getImageData( 0, 0, image.height - 1, image.width - 1 ).data;
   log( name + "- imageData:" );
   log( "<pre>" + JSON.stringify( imageData, null, '\t' ) + "</pre>" );
 }
