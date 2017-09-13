@@ -43,3 +43,7 @@ function renderImages( uploads )
   }
 }
 
+document.getElementById( "uploads" ).onChange = function()
+{
+  renderImages( this.files );
+}
