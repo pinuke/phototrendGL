@@ -1,5 +1,5 @@
 function log( input ){
-
+  document.getElementById( "log" ).innerHTML += input;
 }
 
 funtion loadGraph( image ){
@@ -12,8 +12,6 @@ funtion loadGraph( image ){
 
 function renderImages( uploads )
 {
-  var errors="";
-  
   if( uploads && uploads[0] )
   {
     for( var i = 0; i < uploads.length; i++ )
@@ -23,24 +21,25 @@ function renderImages( uploads )
         var img = new Image;
         img.onload = function()
         {
-          window.URL.revokeObjectURL(image.src);
+          window.URL.revokeObjectURL( image.src );
         }
         img.src = window.URL.createObjectURL(uploads[i]);
+        log( "filename: " + uploads[i].name + "<br/>" );
         loadGraph( image )
       }
       else if( (/\.(gif|apng)$/i).test(uploads[i].name) )
       {
-        errors += uploads[i].name +" - Image extension not supported at this time<br/>";
+        log( uploads[i].name +" - Image extension not supported at this time<br/>" );
       }
       else
       {
-        errors += uploads[i].name +" - Extension not supported<br/>";
+        log( uploads[i].name +" - Extension not supported<br/>" );
       }
     }
   }
   else
   {
-    errors += "No files provided during upload to renderImage()<br/>";
+    log( "No files provided during upload to renderImage()<br/>" );
   }
 }
 
