@@ -6,9 +6,13 @@ function loadGraph( name, image ){
   var two_d = document.createElement( "canvas" );
   var context = two_d.getContext( '2d' );
   context.drawImage( image, 0, 0 );
-  var imageData = context.getImageData( 0, 0, image.height - 1, image.width - 1 ).data;
+  var imageData = context.getImageData( 0, 0, image.width , image.height );
   log( name + "- imageData:" );
-  log( "<pre>" + JSON.stringify( imageData, null, '\t' ) + "</pre>" );
+  log( "imageData height:" + imageData.height);
+  log( "imageData width:" + imageData.width);
+  log( "Image height:" + image.height);
+  log( "Image width:" + image.width);
+  log( "<pre>" + JSON.stringify( imageData.data, null, '\t' ) + "</pre>" );
 }
 
 function renderImages( uploads )
