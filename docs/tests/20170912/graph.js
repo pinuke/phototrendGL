@@ -7,7 +7,7 @@ function loadGraph( name, image ){
   var context = two_d.getContext( '2d' );
   context.drawImage( image, 0, 0 );
   var imageData = context.getImageData( 0, 0, image.width - 1, image.height - 1);
-  log( "imageData:<br/><pre>" + JSON.stringify( imageData, null, '\t' ) + "</pre>" );
+  log( name + "- imageData:<br/><pre>" + JSON.stringify( imageData, null, '\t' ) + "</pre>" );
 }
 
 function renderImages( uploads )
@@ -22,15 +22,16 @@ function renderImages( uploads )
       if( (/\.(png|jpeg|jpg)$/i).test(uploads[i].name) )
       {
         var img = new Image;
+        log( "Graphable File: " + uploads[i].name );
+        log( uploads[i].name + ": Preparing image for graphing..." );
         img.onload = function()
         {
+          log( uploads[i].name + ": Graphing..." );
+          loadGraph( uploads[i].name, img );
+          log( uploads[i].name + ": Image graphed" );
           window.URL.revokeObjectURL( img.src );
         }
         img.src = window.URL.createObjectURL(uploads[i]);
-        log( "Graphable File: " + uploads[i].name );
-        log( uploads[i].name + ": Graphing..." );
-        loadGraph( uploads[i].name, img );
-        log( uploads[i].name + ": Image graphed" );
       }
       else if( (/\.(gif|apng)$/i).test(uploads[i].name) )
       {
