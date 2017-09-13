@@ -1,6 +1,5 @@
 function log( input ){
   document.getElementById( "log" ).innerHTML += input + "<br/>";
-  console.log( input );
 }
 
 function loadGraph( name, image ){
@@ -49,8 +48,7 @@ function renderImages( uploads )
   }
 }
 
-document.getElementById( "upload" ).onChange = function()
-{
+document.getElementById( "upload" ).addEventListener("change", function(){
   log( "Input detected!" );
   renderImages( this.files );
-}
+});
