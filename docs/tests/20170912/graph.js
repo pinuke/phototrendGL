@@ -21,15 +21,16 @@ function renderImages( uploads )
       log( uploads[i].name + ": Checking file extension..." );
       if( (/\.(png|jpeg|jpg)$/i).test(uploads[i].name) )
       {
-        var img = new Image;
-        log( "Graphable File: " + uploads[i].name );
+        log( uploads[i].name + ": File is graphable!" );
         log( uploads[i].name + ": Preparing image for graphing..." );
+        var img = new Image;
+        img.name = uploads[i].name;
         img.onload = function()
         {
-          log( uploads[i].name + ": Graphing..." );
-          loadGraph( uploads[i].name, img );
-          log( uploads[i].name + ": Image graphed" );
-          window.URL.revokeObjectURL( img.src );
+          log( this.name + ": Graphing..." );
+          loadGraph( this.name, this );
+          log( this.name + ": Image graphed" );
+          window.URL.revokeObjectURL( this.src );
         }
         img.src = window.URL.createObjectURL(uploads[i]);
       }
