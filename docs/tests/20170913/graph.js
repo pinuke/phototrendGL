@@ -2,6 +2,10 @@ function log( input ){
   document.getElementById( "log" ).innerHTML += input + "<br/>";
 }
 
+function prepareVertices( data ){
+  
+}
+
 function loadGraph( name, image ){
   var time = [performance.now()]
   var two_d = document.createElement( "canvas" );
@@ -18,6 +22,7 @@ function loadGraph( name, image ){
 //  log( "<pre>" + JSON.stringify( imageData.data, null, '\t' ) + "</pre>" );
   time[1]=performance.now()
   log( "Execution Time: " + ( time[1] - time[0] ) + "ms" );
+  log( "Last Pixel: " + imageData.data[imageData.data.length - 4]);
 }
 
 function renderImages( uploads )
