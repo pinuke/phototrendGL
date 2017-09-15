@@ -2,10 +2,6 @@ function log( input ){
   document.getElementById( "log" ).innerHTML += input + "<br/>";
 }
 
-function prepareVertices( data ){
-  
-}
-
 function loadGraph( name, image ){
   var time = [performance.now()]
   var two_d = document.createElement( "canvas" );
@@ -28,6 +24,78 @@ function loadGraph( name, image ){
   log( "Execution Time: " + ( time[1] - time[0] ) + "ms" );
   log( "Last Pixel: " + imageData.data[imageData.data.length - 4]);
   log( "Expected Pixel: " + context.getImageData( image.width-1 , image.height-1 , 1 , 1 ).data[0] );
+  
+  var vertices = {
+    "red" : [],
+    "blue" : [],
+    "green" : [],
+    "alpha" : []
+  }
+  var quads = [] //should be the same for all graphs, as this does not require height, just pixel.
+  function index_of_pixel( x, y ){
+    var coeff = imageData.width * 4 //data per row of pixels should be the image width multiplied by 4 for R, G, B, + A values
+    var ret = coeff * y //index of first pixel in y rows of pixels
+    ret += x * 4 //index of pixel
+    return ret
+  }
+  function mid_point_height ( x, y, offset ){
+    var ret = imageData.data[ index_of_pixel( x, y ) + offset ]
+    ret += imageData.data[ index_of_pixel( x - 1, y ) + offset ]
+    ret += imageData.data[ index_of_pixel( x, y - 1 ) + offset ]
+    ret += imageData.data[ index_of_pixel( x - 1, y - 1 ) + offset ]
+    ret = ret/1020
+    return ret
+  }
+  function add_to_quad ( vertex_index, quad, position ){
+    
+    //position 1 = TR
+    //position 2 = TL
+    //position 3 = BL
+    //position 4 = BR
+    //position 5 = M
+    
+    if( position < 5 )
+      quads[ quad ].corners[ position ] = vertex_index;
+    
+    if( position === 5 ){
+      
+      quads[ quad ].middle = vertex_index;
+      form_triangles( quads[ quad ] );
+      
+    }
+    function form_triangles( quad ){
+    
+    }
+  }
+  for( var i = 0; i < imageData.height; i++)
+  {
+    for( var c = 0; c < imageData.width; c++)
+    {
+      vertices.red[ vertices.red.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) ]/255 ]
+      vertices.green[ vertices.green.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 1 ]/255 ]
+      vertices.blue[ vertices.blue.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 2 ]/255 ]
+      vertices.alpha[ vertices.alpha.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 3 ]/255 ]
+      
+      if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices cannot be at left and bottom boundary
+        add_to_quad( vertices.red.length - 1 , i * imageData.width + c - 1, 3 );
+      
+      if( c < imageData.width - 1 && i < imageData.height - 1 ) //Top Left Vertices cannot be at right or bottom boundary
+        add_to_quad( vertices.red.length - 1 , i * imageData.width + c, 1 );
+      
+      if( c < imageData.width - 1 && i > 0 ) //Bottom Left Vertices cannot be at right or upper boundary
+        add_to_quad( vertices.red.length - 1 , ( i - 1 ) * imageData.width + c, 2 );
+      
+      if( c > 0 && i > 0 ){ //Bottom Right Vertices cannot be at left and upper boundary
+        add_to_quad( vertices.red.length - 1, ( i - 1 ) * imageData.width + c - 1, 4 );
+        add_to_quad( vertices.red.length, ( i - 1 ) * imageData.width + c - 1, 5 );
+        
+        vertices.red[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
+        vertices.green[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
+        vertices.blue[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
+        vertices.alpha[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
+      }
+    }
+  }
 }
 
 function renderImages( uploads )
