@@ -56,7 +56,7 @@ function loadGraph( name, image ){
     //position 4 = M
     
     if( position < 4 )
-      quads[ quad ].corners[ position ] = vertex_index;
+      
     
     if( position === 4 ){
       
@@ -79,17 +79,47 @@ function loadGraph( name, image ){
       vertices.alpha[ vertices.alpha.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 3 ]/255 ]
       
       if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices cannot be at left and bottom boundary
-        add_to_quad( vertices.red.length - 1 , i * imageData.width + c - 1, 0 );
+        
+        //quad, position{0}, vertex reference
+        quads[ i * imageData.width + c - 1 ].corners[ 0 ] = vertices.red.length - 1;
       
       if( c < imageData.width - 1 && i < imageData.height - 1 ) //Top Left Vertices cannot be at right or bottom boundary
-        add_to_quad( vertices.red.length - 1 , i * imageData.width + c, 1 );
+        
+        //quad, position{1}, vertex reference
+        quads[ i * imageData.width + c ].corners[ 1 ] = vertices.red.length - 1;
       
       if( c < imageData.width - 1 && i > 0 ) //Bottom Left Vertices cannot be at right or upper boundary
-        add_to_quad( vertices.red.length - 1 , ( i - 1 ) * imageData.width + c, 2 );
+        
+        //quad, position{2}, vertex reference
+        quads[ ( i - 1 ) * imageData.width + c ].corners[ 2 ] = vertices.red.length - 1;
       
       if( c > 0 && i > 0 ){ //Bottom Right Vertices cannot be at left and upper boundary
-        add_to_quad( vertices.red.length - 1, ( i - 1 ) * imageData.width + c - 1, 3 );
-        add_to_quad( vertices.red.length, ( i - 1 ) * imageData.width + c - 1, 4 );
+        
+        //quad, position{3}, vertex reference
+        quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ] = vertices.red.length - 1;
+      
+          quads[ ( i - 1 ) * imageData.width + c - 1 ].middle = vertices.red.length;
+
+          triangles[ triangles.length ] = [ 
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
+          ]
+          triangles[ triangles.length ] = [ 
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
+          ]
+          triangles[ triangles.length ] = [ 
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
+          ]
+          triangles[ triangles.length ] = [ 
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
+            quads[ ( i - 1 ) * imageData.width + c - 1 ].middle
+          ]
         
         vertices.red[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
         vertices.green[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
