@@ -32,6 +32,7 @@ function loadGraph( name, image ){
     "alpha" : []
   }
   var quads = [] //should be the same for all graphs, as this does not require height, just pixel.
+  var triangles = [] //triangle elements consists of *references* to vertices, so they are not height-dependent
   function index_of_pixel( x, y ){
     var coeff = imageData.width * 4 //data per row of pixels should be the image width multiplied by 4 for R, G, B, + A values
     var ret = coeff * y //index of first pixel in y rows of pixels
@@ -48,23 +49,24 @@ function loadGraph( name, image ){
   }
   function add_to_quad ( vertex_index, quad, position ){
     
-    //position 1 = TR
-    //position 2 = TL
-    //position 3 = BL
-    //position 4 = BR
-    //position 5 = M
+    //position 0 = TR
+    //position 1 = TL
+    //position 2 = BL
+    //position 3 = BR
+    //position 4 = M
     
-    if( position < 5 )
+    if( position < 4 )
       quads[ quad ].corners[ position ] = vertex_index;
     
-    if( position === 5 ){
+    if( position === 4 ){
       
       quads[ quad ].middle = vertex_index;
-      form_triangles( quads[ quad ] );
       
-    }
-    function form_triangles( quad ){
-    
+      triangles[ triangles.length ] = [ quads[ quad ].corners[ 0 ], quads[ quad ].corners[ 1 ], quads[ quad ].middle ]
+      triangles[ triangles.length ] = [ quads[ quad ].corners[ 1 ], quads[ quad ].corners[ 2 ], quads[ quad ].middle ]
+      triangles[ triangles.length ] = [ quads[ quad ].corners[ 2 ], quads[ quad ].corners[ 3 ], quads[ quad ].middle ]
+      triangles[ triangles.length ] = [ quads[ quad ].corners[ 3 ], quads[ quad ].corners[ 0 ], quads[ quad ].middle ]
+      
     }
   }
   for( var i = 0; i < imageData.height; i++)
@@ -77,7 +79,7 @@ function loadGraph( name, image ){
       vertices.alpha[ vertices.alpha.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 3 ]/255 ]
       
       if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices cannot be at left and bottom boundary
-        add_to_quad( vertices.red.length - 1 , i * imageData.width + c - 1, 3 );
+        add_to_quad( vertices.red.length - 1 , i * imageData.width + c - 1, 0 );
       
       if( c < imageData.width - 1 && i < imageData.height - 1 ) //Top Left Vertices cannot be at right or bottom boundary
         add_to_quad( vertices.red.length - 1 , i * imageData.width + c, 1 );
@@ -86,8 +88,8 @@ function loadGraph( name, image ){
         add_to_quad( vertices.red.length - 1 , ( i - 1 ) * imageData.width + c, 2 );
       
       if( c > 0 && i > 0 ){ //Bottom Right Vertices cannot be at left and upper boundary
-        add_to_quad( vertices.red.length - 1, ( i - 1 ) * imageData.width + c - 1, 4 );
-        add_to_quad( vertices.red.length, ( i - 1 ) * imageData.width + c - 1, 5 );
+        add_to_quad( vertices.red.length - 1, ( i - 1 ) * imageData.width + c - 1, 3 );
+        add_to_quad( vertices.red.length, ( i - 1 ) * imageData.width + c - 1, 4 );
         
         vertices.red[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
         vertices.green[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
