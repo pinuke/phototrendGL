@@ -11,19 +11,13 @@ function loadGraph( name, image ){
   context.drawImage( image, 0, 0 );
   var imageData = context.getImageData( 0, 0, image.width , image.height );
   log( name + "- imageData:" );
-  log( "imageData height: " + imageData.height );
-  log( "imageData width: " + imageData.width );
-  log( "Image height: " + image.height );
-  log( "Image width: " + image.width );
-  log( "Canvas height: " + two_d.height );
-  log( "Canvas width: " + two_d.width );
-  log( "Expected size: " + image.height * image.width * 4 );
-  log( "Actual size: " + imageData.data.length );
+//  log( "imageData height: " + imageData.height + "px; imageData width: " + imageData.width + "px" );
+//  log( "Image height: " + image.height + "px; Image width: " + image.width + "px" );
+//  log( "Canvas height: " + two_d.height  + "px; Canvas width: " + two_d.width + "px" );
+//  log( "Expected size: " + image.height * image.width * 4 );
+//  log( "Actual size: " + imageData.data.length );
 //  log( "<pre>" + JSON.stringify( imageData.data, null, '\t' ) + "</pre>" );
-  time[1]=performance.now()
-  log( "Execution Time: " + ( time[1] - time[0] ) + "ms" );
-  log( "Last Pixel: " + imageData.data[imageData.data.length - 4]);
-  log( "Expected Pixel: " + context.getImageData( image.width-1 , image.height-1 , 1 , 1 ).data[0] );
+  log( "Last Red Channel: " + imageData.data[imageData.data.length - 4] );
   
   var vertices = {
     "red" : [],
@@ -47,36 +41,26 @@ function loadGraph( name, image ){
     ret = ret/1020
     return ret
   }
-  function add_to_quad ( vertex_index, quad, position ){
-    
-    //position 0 = TR
-    //position 1 = TL
-    //position 2 = BL
-    //position 3 = BR
-    //position 4 = M
-    
-    if( position < 4 )
-      
-    
-    if( position === 4 ){
-      
-      quads[ quad ].middle = vertex_index;
-      
-      triangles[ triangles.length ] = [ quads[ quad ].corners[ 0 ], quads[ quad ].corners[ 1 ], quads[ quad ].middle ]
-      triangles[ triangles.length ] = [ quads[ quad ].corners[ 1 ], quads[ quad ].corners[ 2 ], quads[ quad ].middle ]
-      triangles[ triangles.length ] = [ quads[ quad ].corners[ 2 ], quads[ quad ].corners[ 3 ], quads[ quad ].middle ]
-      triangles[ triangles.length ] = [ quads[ quad ].corners[ 3 ], quads[ quad ].corners[ 0 ], quads[ quad ].middle ]
-      
-    }
-  }
   for( var i = 0; i < imageData.height; i++)
   {
     for( var c = 0; c < imageData.width; c++)
     {
-      vertices.red[ vertices.red.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) ]/255 ]
-      vertices.green[ vertices.green.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 1 ]/255 ]
-      vertices.blue[ vertices.blue.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 2 ]/255 ]
-      vertices.alpha[ vertices.alpha.length ] = [ c, i, imageData.data[ index_of_pixel( c, i ) + 3 ]/255 ]
+      vertices.red[ vertices.red.length ] = [ 
+        c, i, 
+        imageData.data[ index_of_pixel( c, i ) ]/255 
+      ]
+      vertices.green[ vertices.green.length ] = [ 
+        c, i, 
+        imageData.data[ index_of_pixel( c, i ) + 1 ]/255 
+      ]
+      vertices.blue[ vertices.blue.length ] = [ 
+        c, i, 
+        imageData.data[ index_of_pixel( c, i ) + 2 ]/255 
+      ]
+      vertices.alpha[ vertices.alpha.length ] = [ 
+        c, i, 
+        imageData.data[ index_of_pixel( c, i ) + 3 ]/255 
+      ]
       
       if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices cannot be at left and bottom boundary
         
@@ -121,10 +105,26 @@ function loadGraph( name, image ){
             quads[ ( i - 1 ) * imageData.width + c - 1 ].middle
           ]
         
-        vertices.red[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
-        vertices.green[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
-        vertices.blue[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
-        vertices.alpha[ vertices.red.length ] = [ c - 0.5, i - 0.5, mid_point_height( c, i , 0 ) ]
+        vertices.red[ vertices.red.length ] = [ 
+          c - 0.5, 
+          i - 0.5,
+          mid_point_height( c, i , 0 ) 
+        ]
+        vertices.green[ vertices.red.length ] = [ 
+          c - 0.5, 
+          i - 0.5, 
+          mid_point_height( c, i , 0 ) 
+        ]
+        vertices.blue[ vertices.red.length ] = [ 
+          c - 0.5, 
+          i - 0.5, 
+          mid_point_height( c, i , 0 ) 
+        ]
+        vertices.alpha[ vertices.red.length ] = [ 
+          c - 0.5, 
+          i - 0.5, 
+          mid_point_height( c, i , 0 ) 
+        ]
       }
     }
   }
@@ -132,27 +132,22 @@ function loadGraph( name, image ){
 
 function renderImages( uploads )
 {
-  log( "Checking files..." );
   if( uploads && uploads[0] )
   {
-    log( "Files detected: " + uploads.length + " files" );
+//    log( "Files detected: " + uploads.length + " files" );
     for( var i = 0; i < uploads.length; i++ )
     {
-      log( uploads[i].name + ": Checking file extension..." );
+//      log( uploads[i].name + ": Checking file extension..." );
       if( (/\.(png|jpeg|jpg)$/i).test(uploads[i].name) )
       {
-        log( uploads[i].name + ": File is graphable!" );
-        log( uploads[i].name + ": Preparing image for graphing..." );
+//        log( uploads[i].name + ": File is graphable! Graphing it..." );
         var img = new Image;
         (function (val) {
           img.addEventListener( "load", function (){
-            log( val + ": Graphing..." );
             loadGraph( val, this );
-            log( val + ": Image graphed" );
             window.URL.revokeObjectURL( this.src );
           })
         })(uploads[i].name);
-        log( uploads[i].name + ": Load handler set" );
         img.src = window.URL.createObjectURL(uploads[i]);
       }
       else if( (/\.(gif|apng)$/i).test(uploads[i].name) )
@@ -172,6 +167,5 @@ function renderImages( uploads )
 }
 
 document.getElementById( "upload" ).addEventListener("change", function(){
-  log( "Input detected!" );
   renderImages( this.files );
 });
