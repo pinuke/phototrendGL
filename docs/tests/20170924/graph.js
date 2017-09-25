@@ -3,7 +3,6 @@ function log( input ){
 }
 
 function loadPlot( name, image ){
-  var time = [performance.now()]
   var two_d = document.createElement( "canvas" );
   two_d.width = image.width;
   two_d.height = image.height;
@@ -58,48 +57,54 @@ function loadPlot( name, image ){
         imageData.data[ index_of_pixel( c, i ) + 3 ]
       ]
       
-      if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices cannot be at left and bottom boundary
-        
-        //quad, position{0}, vertex reference
+      if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices - cannot be at left and bottom boundary
         plot.quads[ i * imageData.width + c - 1 ].corners[ 0 ] = vertices.red.length - 1;
       
-      if( c < imageData.width - 1 && i < imageData.height - 1 ) //Top Left Vertices cannot be at right or bottom boundary
+      if( c < imageData.width - 1 && i < imageData.height - 1 ){
+        //Top Left Vertices 
+        // - cannot be at right or bottom boundary
+        // - first corner to be found
         
-        //quad, position{1}, vertex reference
+        plot.quads[ i * imageData.width + c ] = {
+          "corners": [],
+          "middle"
+        }
         plot.quads[ i * imageData.width + c ].corners[ 1 ] = vertices.red.length - 1;
-      
-      if( c < imageData.width - 1 && i > 0 ) //Bottom Left Vertices cannot be at right or upper boundary
         
-        //quad, position{2}, vertex reference
+      }
+      
+      if( c < imageData.width - 1 && i > 0 ) //Bottom Left Vertices - cannot be at right or upper boundary
         plot.quads[ ( i - 1 ) * imageData.width + c ].corners[ 2 ] = vertices.red.length - 1;
       
-      if( c > 0 && i > 0 ){ //Bottom Right Vertices cannot be at left and upper boundary
+      if( c > 0 && i > 0 ){
+        //Bottom Right Vertices
+        // - cannot be at left and upper boundary
+        // - middle point is found and triangles are established only when bottom right is found
         
-        //quad, position{3}, vertex reference
         plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ] = vertices.red.length - 1;
       
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle = vertices.red.length;
+        plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle = vertices.red.length;
 
-          plot.triangles[ plot.triangles.length ] = [ 
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
-          ]
-          plot.triangles[ plot.triangles.length ] = [ 
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
-          ]
-          plot.triangles[ plot.triangles.length ] = [ 
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
-          ]
-          plot.triangles[ plot.triangles.length ] = [ 
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
-            plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle
-          ]
+        plot.triangles[ plot.triangles.length ] = [ 
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
+        ]
+        plot.triangles[ plot.triangles.length ] = [ 
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
+        ]
+        plot.triangles[ plot.triangles.length ] = [ 
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
+        ]
+        plot.triangles[ plot.triangles.length ] = [ 
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
+          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle
+        ]
         
         vertices.red[ vertices.red.length ] = [ 
           c - 0.5, 
