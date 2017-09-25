@@ -14,7 +14,8 @@ function loadPlot( name, image ){
       "alpha" : []
     },
     "quads" : [],
-    "triangles" = []
+    "triangles" : [],
+    "name" : name
   }
   var vertices = plot.vertices;
   
