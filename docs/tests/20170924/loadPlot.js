@@ -25,6 +25,11 @@ function loadPlot( name, image ){
   }
   for( var i = 0; i < imageData.height; i++)
   {
+    vertices.red[ i ] = [];
+    vertices.blue[ i ] = [];
+    vertices.green[ i ] = [];
+    vertices.alpha[ i ] = [];
+    
     for( var c = 0, iop = index_of_pixel( c, i ); c < imageData.width; c++)
     {
       vertices.red[ i ][ c ] = imageData.data[ iop ];
