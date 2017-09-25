@@ -129,6 +129,9 @@ function loadPlot( name, image ){
       }
     }
   }
+  
+  return plot;
+  
 }
 
 function renderImages( uploads )
