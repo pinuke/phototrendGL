@@ -13,8 +13,6 @@ function loadPlot( name, image ){
       "green" : [],
       "alpha" : []
     },
-    "quads" : [],
-    "triangles" : [],
     "name" : name
   }
   var vertices = plot.vertices;
@@ -37,92 +35,20 @@ function loadPlot( name, image ){
   {
     for( var c = 0, iop = index_of_pixel( c, i ); c < imageData.width; c++)
     {
-      vertices.red[ vertices.red.length ] = [ 
-        c, i, 
-        imageData.data[ iop ]
-      ]
-      vertices.green[ vertices.green.length ] = [ 
-        c, i, 
-        imageData.data[ iop + 1 ]
-      ]
-      vertices.blue[ vertices.blue.length ] = [ 
-        c, i, 
-        imageData.data[ iop + 2 ]
-      ]
-      vertices.alpha[ vertices.alpha.length ] = [ 
-        c, i, 
-        imageData.data[ iop + 3 ]
-      ]
-      
-      if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices - cannot be at left and bottom boundary
-        plot.quads[ i * imageData.width + c - 1 ].corners[ 0 ] = vertices.red.length - 1;
-      
-      if( c < imageData.width - 1 && i < imageData.height - 1 ){
-        //Top Left Vertices 
-        // - cannot be at right or bottom boundary
-        // - first corner to be found
-        
-        plot.quads[ i * imageData.width + c ] = {
-          "corners": [],
-          "middle"
-        }
-        plot.quads[ i * imageData.width + c ].corners[ 1 ] = vertices.red.length - 1;
-        
-      }
-      
-      if( c < imageData.width - 1 && i > 0 ) //Bottom Left Vertices - cannot be at right or upper boundary
-        plot.quads[ ( i - 1 ) * imageData.width + c ].corners[ 2 ] = vertices.red.length - 1;
+      vertices.red[ 2i ][ 2c ] = c, imageData.data[ iop ];
+      vertices.green[ 2i ][ 2c ] = c, imageData.data[ iop + 1 ]
+      vertices.blue[ 2i ][ 2c ] = c, imageData.data[ iop + 2 ]
+      vertices.alpha[ 2i ][ 2c ] = c, imageData.data[ iop + 3 ]
       
       if( c > 0 && i > 0 ){
         //Bottom Right Vertices
         // - cannot be at left and upper boundary
-        // - middle point is found and triangles are established only when bottom right is found
+        // - middle point is found only when bottom right is found
         
-        plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ] = vertices.red.length - 1;
-      
-        plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle = vertices.red.length;
-
-        plot.triangles[ plot.triangles.length ] = [ 
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
-        ]
-        plot.triangles[ plot.triangles.length ] = [ 
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 1 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
-        ]
-        plot.triangles[ plot.triangles.length ] = [ 
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 2 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle 
-        ]
-        plot.triangles[ plot.triangles.length ] = [ 
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 3 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].corners[ 0 ],
-          plot.quads[ ( i - 1 ) * imageData.width + c - 1 ].middle
-        ]
-        
-        vertices.red[ vertices.red.length ] = [ 
-          c - 0.5, 
-          i - 0.5,
-          mid_point_height( c, i , 0 ) 
-        ]
-        vertices.green[ vertices.red.length ] = [ 
-          c - 0.5, 
-          i - 0.5, 
-          mid_point_height( c, i , 1 ) 
-        ]
-        vertices.blue[ vertices.red.length ] = [ 
-          c - 0.5, 
-          i - 0.5, 
-          mid_point_height( c, i , 2 ) 
-        ]
-        vertices.alpha[ vertices.red.length ] = [ 
-          c - 0.5, 
-          i - 0.5, 
-          mid_point_height( c, i , 3 ) 
-        ]
+        vertices.red[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 0 );
+        vertices.green[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 1 );
+        vertices.blue[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 2 );
+        vertices.alpha[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 3 );
       }
     }
   }
