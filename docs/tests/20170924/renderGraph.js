@@ -43,5 +43,8 @@ function renderGraph( plot ){
   };
 
   // Plotting the surfaces..
-  Plotly.newPlot('myDiv', [data_z4]);
+  Plotly.newPlot('redgraph', [data_z4]);
+  Plotly.newPlot('bluegraph', [data_z4]);
+  Plotly.newPlot('greengraph', [data_z4]);
+  Plotly.newPlot('alphagraph', [data_z4]);
 }
