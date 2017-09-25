@@ -34,6 +34,6 @@ function loadPlot( name, image ){
     }
   }
   
-  return plot;
+  plotGraph(plot);
   
 }
