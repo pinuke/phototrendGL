@@ -80,7 +80,3 @@ function extractImages( uploads, callback )
     log( "No files provided during upload to renderImage()" );
   }
 }
-
-document.getElementById( "upload" ).addEventListener("change", function(){
-  extractImages( this.files );
-});
