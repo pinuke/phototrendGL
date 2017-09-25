@@ -47,19 +47,19 @@ function loadGraph( name, image ){
     {
       vertices.red[ vertices.red.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) ]/255 
+        imageData.data[ index_of_pixel( c, i ) ]
       ]
       vertices.green[ vertices.green.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) + 1 ]/255 
+        imageData.data[ index_of_pixel( c, i ) + 1 ]
       ]
       vertices.blue[ vertices.blue.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) + 2 ]/255 
+        imageData.data[ index_of_pixel( c, i ) + 2 ]
       ]
       vertices.alpha[ vertices.alpha.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) + 3 ]/255 
+        imageData.data[ index_of_pixel( c, i ) + 3 ]
       ]
       
       if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices cannot be at left and bottom boundary
