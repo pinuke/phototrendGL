@@ -23,33 +23,14 @@ function loadPlot( name, image ){
     ret += x * 4 //index of pixel
     return ret
   }
-  function mid_point_height ( x, y, offset ){
-    var ret = imageData.data[ index_of_pixel( x, y ) + offset ]
-    ret += imageData.data[ index_of_pixel( x - 1, y ) + offset ]
-    ret += imageData.data[ index_of_pixel( x, y - 1 ) + offset ]
-    ret += imageData.data[ index_of_pixel( x - 1, y - 1 ) + offset ]
-    ret = ret/1020
-    return ret
-  }
   for( var i = 0; i < imageData.height; i++)
   {
     for( var c = 0, iop = index_of_pixel( c, i ); c < imageData.width; c++)
     {
-      vertices.red[ 2i ][ 2c ] = c, imageData.data[ iop ];
-      vertices.green[ 2i ][ 2c ] = c, imageData.data[ iop + 1 ]
-      vertices.blue[ 2i ][ 2c ] = c, imageData.data[ iop + 2 ]
-      vertices.alpha[ 2i ][ 2c ] = c, imageData.data[ iop + 3 ]
-      
-      if( c > 0 && i > 0 ){
-        //Bottom Right Vertices
-        // - cannot be at left and upper boundary
-        // - middle point is found only when bottom right is found
-        
-        vertices.red[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 0 );
-        vertices.green[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 1 );
-        vertices.blue[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 2 );
-        vertices.alpha[ 2i - 1 ][ 2c - 1 ] = mid_point_height( c, i , 3 );
-      }
+      vertices.red[ i ][ c ] = imageData.data[ iop ];
+      vertices.green[ i ][ c ] = imageData.data[ iop + 1 ]
+      vertices.blue[ i ][ c ] = imageData.data[ iop + 2 ]
+      vertices.alpha[ i ][ c ] = imageData.data[ iop + 3 ]
     }
   }
   
