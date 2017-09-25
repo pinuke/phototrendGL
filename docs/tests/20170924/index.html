@@ -6,10 +6,24 @@
     <br/>
     <input id="upload" type="file" multiple>
     <div id="log"></div>
-    
     <script
       type="text/javascript"
-      src="graph.js?v=testing"
+    >
+      function log( input ){
+        document.getElementById( "log" ).innerHTML += input + "<br/>";
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="extractImage.js?v=testing"
+    ></script>
+    <script
+      type="text/javascript"
+      src="loadPlot.js?v=testing"
+    ></script>
+    <script
+      type="text/javascript"
+      src="plotGraph.js?v=testing"
     ></script>
   </body>
 </html>
