@@ -38,23 +38,23 @@ function loadPlot( name, image ){
   }
   for( var i = 0; i < imageData.height; i++)
   {
-    for( var c = 0; c < imageData.width; c++)
+    for( var c = 0, iop = index_of_pixel( c, i ); c < imageData.width; c++)
     {
       vertices.red[ vertices.red.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) ]
+        imageData.data[ iop ]
       ]
       vertices.green[ vertices.green.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) + 1 ]
+        imageData.data[ iop + 1 ]
       ]
       vertices.blue[ vertices.blue.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) + 2 ]
+        imageData.data[ iop + 2 ]
       ]
       vertices.alpha[ vertices.alpha.length ] = [ 
         c, i, 
-        imageData.data[ index_of_pixel( c, i ) + 3 ]
+        imageData.data[ iop + 3 ]
       ]
       
       if( c > 0 && i < imageData.height - 1 ) //Top Right Vertices - cannot be at left and bottom boundary
