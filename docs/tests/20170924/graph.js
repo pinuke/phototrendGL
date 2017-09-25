@@ -114,17 +114,17 @@ function loadPlot( name, image ){
         vertices.green[ vertices.red.length ] = [ 
           c - 0.5, 
           i - 0.5, 
-          mid_point_height( c, i , 0 ) 
+          mid_point_height( c, i , 1 ) 
         ]
         vertices.blue[ vertices.red.length ] = [ 
           c - 0.5, 
           i - 0.5, 
-          mid_point_height( c, i , 0 ) 
+          mid_point_height( c, i , 2 ) 
         ]
         vertices.alpha[ vertices.red.length ] = [ 
           c - 0.5, 
           i - 0.5, 
-          mid_point_height( c, i , 0 ) 
+          mid_point_height( c, i , 3 ) 
         ]
       }
     }
