@@ -36,6 +36,7 @@ function extractImages( uploads, callback )
             
             var vertices = plot.vertices;
 			var heights = [];
+			var channels = [ "red", "blue", "green", "alpha" ]
   
             function index_of_pixel( x, y ){
               var coeff = imageData.width * 4 //data per row of pixels should be the image width multiplied by 4 for R, G, B, + A values
@@ -49,105 +50,34 @@ function extractImages( uploads, callback )
 				for( var c = 0; c < imageData.width - 1; i++)
 				{
 					
-					height[0] = imageData.data[ index_of_pixel( c, i ) ]
-					height[1] = imageData.data[ index_of_pixel( c + 1, i ) ]
-					height[2] = imageData.data[ index_of_pixel( c + 1, i + 1 ) ]
-					height[3] = imageData.data[ index_of_pixel( c, i + 1 ) ]
-					
-					vertices.red.concat([
-					
-						c, i, height[0],
-						c + 1, i, height[1],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+					channels.forEach( function( name, ind ){
 						
-						c + 1, i, height[1],
-						c + 1, i + 1, height[2],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+						height[0] = imageData.data[ index_of_pixel( c, i ) + ind ]
+						height[1] = imageData.data[ index_of_pixel( c + 1, i ) + ind ]
+						height[2] = imageData.data[ index_of_pixel( c + 1, i + 1 ) + ind ]
+						height[3] = imageData.data[ index_of_pixel( c, i + 1 ) + ind ]
 						
-						c + 1, i + 1, height[2],
-						c, i + 1, height[3],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+						vertices[ name ].concat([
 						
-						c, i + 1, height[3],
-						c, i, height[0],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-					
-					])
-					
-					height[0] = imageData.data[ index_of_pixel( c, i ) + 1 ]
-					height[1] = imageData.data[ index_of_pixel( c + 1, i ) + 1 ]
-					height[2] = imageData.data[ index_of_pixel( c + 1, i + 1 ) + 1 ]
-					height[3] = imageData.data[ index_of_pixel( c, i + 1 ) + 1 ]
-					
-					vertices.green.concat([
-					
-						c, i, height[0],
-						c + 1, i, height[1],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+							c, i, height[0],
+							c + 1, i, height[1],
+							c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+							
+							c + 1, i, height[1],
+							c + 1, i + 1, height[2],
+							c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+							
+							c + 1, i + 1, height[2],
+							c, i + 1, height[3],
+							c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+							
+							c, i + 1, height[3],
+							c, i, height[0],
+							c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
 						
-						c + 1, i, height[1],
-						c + 1, i + 1, height[2],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
+						])
 						
-						c + 1, i + 1, height[2],
-						c, i + 1, height[3],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c, i + 1, height[3],
-						c, i, height[0],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-					
-					])
-					
-					height[0] = imageData.data[ index_of_pixel( c, i ) + 2 ]
-					height[1] = imageData.data[ index_of_pixel( c + 1, i ) + 2 ]
-					height[2] = imageData.data[ index_of_pixel( c + 1, i + 1 ) + 2 ]
-					height[3] = imageData.data[ index_of_pixel( c, i + 1 ) + 2 ]
-					
-					vertices.blue.concat([
-					
-						c, i, height[0],
-						c + 1, i, height[1],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c + 1, i, height[1],
-						c + 1, i + 1, height[2],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c + 1, i + 1, height[2],
-						c, i + 1, height[3],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c, i + 1, height[3],
-						c, i, height[0],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-					
-					])
-					
-					height[0] = imageData.data[ index_of_pixel( c, i ) + 3 ]
-					height[1] = imageData.data[ index_of_pixel( c + 1, i ) + 3 ]
-					height[2] = imageData.data[ index_of_pixel( c + 1, i + 1 ) + 3 ]
-					height[3] = imageData.data[ index_of_pixel( c, i + 1 ) + 3 ]
-					
-					vertices.alpha.concat([
-					
-						c, i, height[0],
-						c + 1, i, height[1],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c + 1, i, height[1],
-						c + 1, i + 1, height[2],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c + 1, i + 1, height[2],
-						c, i + 1, height[3],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-						
-						c, i + 1, height[3],
-						c, i, height[0],
-						c + 0.5, i + 0.5, ( height[0] + height[1] + height[2] + height[3] ) / 4,
-					
-					])
+					})
 					
 				}
 				
